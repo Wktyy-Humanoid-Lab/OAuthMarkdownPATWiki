@@ -37,7 +37,7 @@ export default async function Blogs() {
         <TipsCard>
           ブログへようこそ！
           <br />
-          <Link target='_blank' rel='noopener noreferrer' href='https://github.com/isirmt/NextjsBlogWithGitPAT/issues'>
+          <Link target='_blank' rel='noopener noreferrer' href='https://github.com/isirmt/OAuthMarkdownPATWiki/issues'>
             <u>バグ・問題等の報告はこちらへ</u>
           </Link>
         </TipsCard>

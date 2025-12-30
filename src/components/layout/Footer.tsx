@@ -35,9 +35,9 @@ export default async function Footer() {
             className='underline'
             target='_blank'
             rel='noopener noreferrer'
-            href='https://github.com/isirmt/NextjsBlogWithGitPAT'
+            href='https://github.com/isirmt/OAuthMarkdownPATWiki'
           >
-            NextjsBlogWithGitPAT
+            OAuthMarkdownPATWiki
           </Link>
           &nbsp; (
           {baseRepoCommitIsPresenting ? (
