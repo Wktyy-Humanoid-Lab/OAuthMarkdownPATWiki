@@ -5,7 +5,7 @@ import { lastModified } from '@/static/constant';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const staticPaths = ['/post', '/profile', '/series', '/tags'];
+const staticPaths = ['/post', '/series', '/tags'];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getPostsProps();

@@ -32,7 +32,6 @@ pnpm dev
 - GIT_REPO: 対象リポジトリ名
 - GIT_POSTS_DIR: 対象リポジトリのMDファイルがあるフォルダ
 - GIT_IMAGES_DIR: 対象リポジトリの画像フォルダ
-- GIT_PROFILE_PATH: 対象リポジトリのプロフィールのMDまでのパス
 - GIT_TOKEN: GitHub API (PAT) トークン
 - NEXT_PUBLIC_RECAPTCHA_SITE_KEY: reCAPTCHAのサイトキー
 - RECAPTCHA_SECRET_KEY: reCAPTCHAのシークレットキー
@@ -53,11 +52,9 @@ isirmt/example_blog_posts
 │   │   ├── 2.md
 │   │   └── ...
 │   └── 記事名.md
-├── img/
-│   ├── [任意]
-│   └── 任意
-└── profile/
-    └── index.md
+└── img/
+    ├── [任意]
+    └── 任意
 ```
 
 この場合は環境変数を次のようにセットします。
@@ -66,7 +63,6 @@ isirmt/example_blog_posts
 - GIT_REPO=example_blog_posts
 - GIT_POSTS_DIR=posts
 - GIT_IMAGES_DIR=img
-- GIT_PROFILE_PATH=profile/index.md
 
 また、`/src/static/constant.ts`も必要に応じて変更してください
 

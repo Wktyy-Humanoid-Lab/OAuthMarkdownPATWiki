@@ -34,7 +34,6 @@ Set the following environment variables in your local environment (`.env.local`)
 - GIT_REPO: Target repository name
 - GIT_POSTS_DIR: Folder in the target repository where the MD files are located
 - GIT_IMAGES_DIR: Image folder in the target repository
-- GIT_PROFILE_PATH: Path to the profile MD file in the target repository
 - GIT_TOKEN: GitHub API (PAT) token
 - NEXT_PUBLIC_RECAPTCHA_SITE_KEY: reCAPTCHA site key
 - RECAPTCHA_SECRET_KEY: reCAPTCHA secret key
@@ -55,11 +54,9 @@ isirmt/example_blog_posts
 │   │   ├── 2.md
 │   │   └── ...
 │   └── ArticleName.md
-├── img/
-│   ├── [Optional]
-│   └── Optional
-└── profile/
-    └── index.md
+└── img/
+    ├── [Optional]
+    └── Optional
 ```
 
 In this case, set the environment variables as follows:
@@ -68,7 +65,6 @@ In this case, set the environment variables as follows:
 - GIT_REPO=example_blog_posts
 - GIT_POSTS_DIR=posts
 - GIT_IMAGES_DIR=img
-- GIT_PROFILE_PATH=profile/index.md
 
 Also, modify `/src/static/constant.ts` as needed.
 
