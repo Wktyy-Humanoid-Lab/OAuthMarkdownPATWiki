@@ -10,12 +10,25 @@ import type { Post, PostData, SeriesData } from '@/static/postType';
 const gitContentPath = `https://api.github.com/repos/${process.env.GIT_USERNAME!}/${process.env.GIT_REPO!}/contents`;
 
 const getPostContent = cache(async (path: string): Promise<{ data: PostData; content: string; excerpt: string }> => {
-  const fileJson = await fetch(`${gitContentPath}/${path}`, {
+  const fileRes = await fetch(`${gitContentPath}/${path}`, {
     ...getHeaders(),
     ...getNext(1200),
-  })
-    .then((res) => res.json())
-    .catch((err) => console.error(err));
+  });
+  const fileText = await fileRes.text();
+  if (!fileRes.ok) {
+    console.error(
+      `Error fetching post content (${path}): ${fileRes.status} ${fileRes.statusText} - ${fileText.slice(0, 200)}`,
+    );
+    notFound();
+  }
+
+  let fileJson: any;
+  try {
+    fileJson = JSON.parse(fileText);
+  } catch (err) {
+    console.error(`Error parsing post content JSON (${path}):`, err, `body preview: ${fileText.slice(0, 200)}`);
+    notFound();
+  }
 
   if (fileJson?.message === 'Not Found' || fileJson?.status === 404) {
     notFound();
@@ -30,6 +43,19 @@ const getPostContent = cache(async (path: string): Promise<{ data: PostData; con
 
   const plainText = await MarkdownToPlainText(content);
   const excerpt = makeExcerpt(plainText, 200);
+
+  if (process.env.LOG_POST_DATA === 'true') {
+    console.log(
+      '[post-fetched]',
+      JSON.stringify({
+        path,
+        title: outputData.title,
+        tags: outputData.tags,
+        hasThumbnail: !!outputData.thumbnail,
+        excerptLength: excerpt?.length ?? 0,
+      }),
+    );
+  }
 
   return {
     data: outputData as PostData,
@@ -122,20 +148,45 @@ export const getPost = cache(async (path: string) => {
 });
 
 export const getImage = cache(async (path: string) => {
-  const fileJson = await fetch(`${gitContentPath}${path}`, {
+  const fileRes = await fetch(`${gitContentPath}${path}`, {
     ...getHeaders(),
     ...getNext(3600 * 24 * 30),
-  })
-    .then((res) => res.json())
-    .catch((err) => console.error(err));
+  });
+  const fileText = await fileRes.text();
+  if (!fileRes.ok) {
+    console.error(
+      `Error fetching image content (${path}): ${fileRes.status} ${fileRes.statusText} - ${fileText.slice(0, 200)}`,
+    );
+    return '';
+  }
+
+  let fileJson: any;
+  try {
+    fileJson = JSON.parse(fileText);
+  } catch (err) {
+    console.error(`Error parsing image content JSON (${path}):`, err, `body preview: ${fileText.slice(0, 200)}`);
+    return '';
+  }
 
   if (!fileJson.git_url) return '';
 
-  const imageJson = await fetch(fileJson.git_url, {
+  const imageRes = await fetch(fileJson.git_url, {
     ...getHeaders(),
     ...getNext(3600 * 24),
-  })
-    .then((res) => res.json())
-    .catch((err) => console.error(err));
-  return imageJson.content as string;
+  });
+  const imageText = await imageRes.text();
+  if (!imageRes.ok) {
+    console.error(
+      `Error fetching image blob (${path}): ${imageRes.status} ${imageRes.statusText} - ${imageText.slice(0, 200)}`,
+    );
+    return '';
+  }
+
+  try {
+    const imageJson = JSON.parse(imageText);
+    return imageJson.content as string;
+  } catch (err) {
+    console.error(`Error parsing image blob JSON (${path}):`, err, `body preview: ${imageText.slice(0, 200)}`);
+    return '';
+  }
 });
