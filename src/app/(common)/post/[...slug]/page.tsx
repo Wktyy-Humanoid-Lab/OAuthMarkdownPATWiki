@@ -9,7 +9,6 @@ import { Main, SideMDShown } from '@/components/layout/PageLayout';
 import PostIndex from '@/components/post/PostIndex';
 import { generateMetadataTemplate } from '@/lib/SEO';
 import { getPost } from '@/lib/getPosts';
-import { author } from '@/static/constant';
 
 const getFileContent = cache(async (path: string) => {
   const postPath = `${process.env.GIT_POSTS_DIR!}/${path}.md`;
@@ -39,11 +38,6 @@ export default async function Post({ params }: { params: { slug: string[] } }) {
     '@type': 'BlogPosting',
     headline: data.title,
     datePublished: data.date ? new Date(data.date).toISOString() : undefined,
-    author: {
-      '@type': 'Person',
-      name: author.name,
-      url: author.url,
-    },
     keywords: data.tags,
   };
 

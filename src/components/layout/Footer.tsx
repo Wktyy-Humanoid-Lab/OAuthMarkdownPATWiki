@@ -24,9 +24,6 @@ export default async function Footer() {
   return (
     <footer>
       <div className='mx-auto flex w-full flex-col items-center justify-center p-5'>
-        <Link href='/dashboard' className='underline'>
-          ダッシュボード
-        </Link>
         <SessionButton />
         <small>&copy; {siteName}</small>
         <small>
